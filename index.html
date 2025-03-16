@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fourth Quarter ePortfolio</title> 
+    <link rel="stylesheet" href="link.css" type="text/css">
+    <style>
+        body {
+            background: url('bgg.jpg') repeat;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .bg-active {
+            background: url('bg.jpg') repeat;
+        }
+        .gif, #startButton {
+            width: 40%;
+            max-width: 400px;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border-radius: 25px;
+        }
+        #startButton {
+            font-size: 50px;
+            background-color: #9c81ba;
+            font-family: "Comic Sans MS", cursive;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            height: 20%;
+            max-height: 150px;
+        }
+        .table {
+            background-color: white;
+            width: 40%;
+            font-family: "Comic Sans MS", cursive;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 25px;
+            border: 3px solid #ac9edf;
+            border-collapse: separate;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #gif-container {
+            display: none;
+            width: 40%;
+            margin: -10px auto 0;
+        }
+        #gif-container img {
+            width: 100%;
+            border-radius: 25px;
+        }
+        .content-table {
+            background-color: white;
+            width: 40%;
+            font-family: "Comic Sans MS", cursive;
+            margin: 5px auto;
+            padding: 10px;
+            border-radius: 25px;
+            border: 3px solid #ac9edf;
+            border-collapse: separate;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .content-table img, .content-table video {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+        .caption {
+            font-family: "Comic Sans MS", cursive;
+            font-size: 18px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body id="body">
+   <br><br>
+
+    <div id="start-gif-container">
+        <img id="start-gif" src="ani.gif" alt="Start Animation" class="gif">
+    </div>
+    <button id="startButton" onclick="showPrompt()">CLICK ME!</button>
+    <div id="gif-container">
+        <img id="gif-image" src="animation.gif" alt="GIF Animation">
+    </div>
+
+    <table class="table" id="mainTable" style="display: none;"> 
+        <tr> 
+            <td id="greeting" style="border: none; font-size: 20px;"></td> 
+        </tr> 
+        <tr id="selection-container">
+            <td>
+                <form name="frmSection">
+                    <label for="cmbSection">Choose a section:</label>
+                    <select name="cmbSection" id="cmbSection">
+                        <option value="home">Home</option>
+                        <option value="about">About Me</option>
+                        <option value="lessons">Lessons</option>
+                        <option value="activities">Activities</option>
+                        <option value="reflection">Reflection</option>
+                    </select>
+                    <input type="button" name="combo" value="Go" onclick="navigateSection()">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <div id="content-area"></div>
+
+    <audio id="startAudio" autoplay loop>
+        <source src="light.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sectionAudio">
+        <source id="sectionAudioSrc" src="she.mp3" type="audio/mpeg">
+    </audio>
+
+    <script type="text/javascript">
+        function showPrompt() {
+            var name = prompt("WELCOME TO JEWEL LIM'S EPORT!! Please enter your name to fully begin and enjoy :3!!");
+            if (name != null && name.trim() !== "") {
+                document.getElementById("greeting").innerHTML = "Good day, " + name + "! Where would you like to go?";
+                document.getElementById("mainTable").style.display = "table"; 
+                document.getElementById("selection-container").style.display = "table-row"; 
+                document.getElementById("startButton").style.display = "none"; 
+                document.getElementById("start-gif-container").style.display = "none"; 
+
+                var gifContainer = document.getElementById("gif-container");
+                var gifImage = document.getElementById("gif-image");
+                gifImage.src = ""; 
+                setTimeout(() => {
+                    gifImage.src = "animation.gif"; 
+                    gifContainer.style.display = "block"; 
+                }, 100);
+
+                document.body.classList.add("bg-active");
+
+                document.getElementById("startAudio").pause();
+                changeAudio("she.mp3");
+            }
+        }
+
+        function navigateSection() {
+            var section = document.frmSection.cmbSection.value;
+            var contentArea = document.getElementById("content-area");
+
+            contentArea.innerHTML = ""; 
+
+            if (section === "home") {
+                location.reload(); 
+                return;
+            }
+
+            let audioFile = "light.mp3";
+            let imageFile = "";
+            let link = null;
+            let videoFile = null;
+            let captionText = "";
+
+            switch (section) {
+                case "about":
+                    audioFile = "me.mp3";
+                    imageFile = "aboutme.jpg";
+                    break;
+                case "lessons":
+                    audioFile = "beach.mp3";
+                    imageFile = "lesson.jpg";
+                    link = "https://docs.google.com/document/d/1pR0RcKP1x4181lf6eZMrXql9OF76hDRrnUK9mAA2mTo/edit?usp=sharing";
+                    break;
+                case "activities":
+                    audioFile = "silver.mp3";
+                    imageFile = "activity.jpg";
+                    videoFile = "street.mp4";
+                    captionText = "Street Dance";
+                    break;
+                case "reflection":
+                    audioFile = "bl.mp3";
+                    imageFile = "reflection.jpg";
+                    break;
+            }
+
+            changeAudio(audioFile);
+
+            var newTable = document.createElement("table");
+            newTable.classList.add("content-table");
+            newTable.style.display = "table";
+
+            var row = newTable.insertRow();
+            var cell = row.insertCell(0);
+            cell.style.padding = "10px";
+
+            var img = document.createElement("img");
+            img.style.width = "100%";
+            img.src = imageFile; 
+
+            if (link) {
+                img.onclick = function() {
+                    window.open(link, "_blank");
+                };
+            }
+
+            cell.appendChild(img);
+
+            if (videoFile) {
+                var caption = document.createElement("div");
+                caption.className = "caption";
+                caption.innerText = captionText;
+                cell.appendChild(caption);
+
+                var video = document.createElement("video");
+                video.controls = true;
+                video.style.width = "100%";
+                var source = document.createElement("source");
+                source.src = videoFile;
+                source.type = "video/mp4";
+                video.appendChild(source);
+                cell.appendChild(video);
+            }
+
+            newTable.appendChild(row);
+            contentArea.appendChild(newTable);
+        }
+
+        function changeAudio(audioFile) {
+            var audioElement = document.getElementById("sectionAudio");
+            var audioSource = document.getElementById("sectionAudioSrc");
+            
+            audioElement.pause();
+            audioSource.src = audioFile;
+            audioElement.load();
+            setTimeout(() => audioElement.play(), 100);
+        }
+    </script>
+</body>
+</html>
